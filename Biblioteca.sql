@@ -82,4 +82,4 @@ SELECT AVG(DATEDIFF(data_devolucao, data_emprestimo)) AS media_dias_emprestimo
 FROM emprestimos
 WHERE data_devolucao IS NOT NULL;
 
-call listar_livros_emprestados_por_usuario(1);
+CALL listar_livros_emprestados_por_usuario(1);
