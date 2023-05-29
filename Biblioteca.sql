@@ -36,18 +36,29 @@ CREATE TABLE emprestimos (
 INSERT INTO livros (titulo, autor, ano_publicacao, categoria)
 VALUES ('Livro 1', 'Autor 1', 2000, 'Ficção'),
        ('Livro 2', 'Autor 2', 2010, 'Fantasia'),
-       ('Livro 3', 'Autor 3', 2021, 'Romance');
-
+       ('Livro 3', 'Autor 3', 2021, 'Romance'),
+       ('Livro 4', 'Autor 4', 2005, 'Aventura'),
+       ('Livro 5', 'Autor 5', 2015, 'Suspense'),
+       ('Livro 6', 'Autor 6', 2022, 'Drama'),
+       ('Livro 7', 'Autor 7', 2023, 'Terror'),
+       ('Livro 8', 'Autor 8', 2005, 'Ação'),
+       ('Livro 9', 'Autor 9', 2010, 'Comédia'),
+       ('Livro 10', 'Autor 10', 2022, 'Romance');
+      
 -- Inserindo dados na tabela "usuarios"
 INSERT INTO usuarios (nome, email, data_nascimento)
-VALUES ('Usuário 1', 'usuario1@email.com', '1990-01-01'),
-       ('Usuário 2', 'usuario2@email.com', '1985-05-10');
+VALUES ('Usuário 1', 'usuario1@email.com', '1970-06-01'),
+       ('Usuário 2', 'usuario2@email.com', '1996-09-30'),
+       ('Usuário 3', 'usuario3@email.com', '1987-05-25'),
+       ('Usuário 4', 'usuario4@email.com', '1985-05-10');
 
 -- Inserindo dados na tabela "emprestimos"
 INSERT INTO emprestimos (id_livro, id_usuario, data_emprestimo, data_devolucao)
-VALUES (1, 1, '2023-01-01', NULL),
-       (2, 1, '2023-02-01', '2023-02-15'),
-       (3, 2, '2023-03-01', NULL);
+VALUES (1, 1, '2023-01-20', NULL),
+       (7, 1, '2023-02-21', '2023-02-25'),
+       (10, 4, '2023-05-29', NULL),
+       (6, 2, '2023-04-30', NULL),
+       (5, 2, '2023-03-11', NULL);
 
 -- Criando trigger para atualizar a data de devolução automaticamente
 DELIMITER //
@@ -77,9 +88,24 @@ SELECT categoria, COUNT(*) AS quantidade
 FROM livros
 GROUP BY categoria;
 
+-- Consulta para saber qual livro cada usuário possuí
+SELECT u.nome, l.titulo, l.categoria, e.data_devolucao 
+FROM usuarios u 
+inner join emprestimos e ON e.id_usuario = u.id
+inner join livros l ON l.id = e.id_livro
+order BY nome;
+
+-- Consulta para saber quantos livro cada usuário possuí
+SELECT u.nome, count(u.nome) as Livros
+FROM usuarios u 
+inner join emprestimos e ON e.id_usuario = u.id
+inner join livros l ON l.id = e.id_livro
+GROUP BY u.nome;
+
 -- Consulta para obter a média de dias que os livros são emprestados
 SELECT AVG(DATEDIFF(data_devolucao, data_emprestimo)) AS media_dias_emprestimo
 FROM emprestimos
 WHERE data_devolucao IS NOT NULL;
 
 CALL listar_livros_emprestados_por_usuario(1);
+
