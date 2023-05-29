@@ -72,6 +72,18 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Criando trigger para mensagem de atenção antes de deletar algum registro da tabela emprestimo
+DELIMITER //
+CREATE TRIGGER alterar_table_emprestimo
+BEFORE DELETE ON emprestimos
+FOR EACH ROW
+BEGIN
+  IF emprestimo.data_devolucao THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é permitido a exclusão dessa informação';
+  END IF;
+END //
+DELIMITER ;
+
 -- Criando stored procedure para listar os livros emprestados por um determinado usuário
 DELIMITER //
 CREATE PROCEDURE listar_livros_emprestados_por_usuario(IN usuario_id INT)
@@ -106,6 +118,15 @@ GROUP BY u.nome;
 SELECT AVG(DATEDIFF(data_devolucao, data_emprestimo)) AS media_dias_emprestimo
 FROM emprestimos
 WHERE data_devolucao IS NOT NULL;
+
+SELECT * FROM emprestimos;
+
+UPDATE emprestimos
+SET data_devolucao = '2023-04-10'
+WHERE id = 5; 
+
+DELETE FROM emprestimos
+WHERE id = 5;
 
 CALL listar_livros_emprestados_por_usuario(1);
 
