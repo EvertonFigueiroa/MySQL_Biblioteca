@@ -78,7 +78,7 @@ CREATE TRIGGER alterar_table_emprestimo
 BEFORE DELETE ON emprestimos
 FOR EACH ROW
 BEGIN
-  IF emprestimo.data_devolucao THEN
+  IF OLD.data_devolucao IS NULL OR OLD.data_devolucao IS NOT NULL THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é permitido a exclusão dessa informação';
   END IF;
 END //
