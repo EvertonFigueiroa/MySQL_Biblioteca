@@ -47,10 +47,10 @@ VALUES ('Livro 1', 'Autor 1', 2000, 'Ficção'),
       
 -- Inserindo dados na tabela "usuarios"
 INSERT INTO usuarios (nome, email, data_nascimento)
-VALUES ('Usuário 1', 'usuario1@email.com', '1970-06-01'),
-       ('Usuário 2', 'usuario2@email.com', '1996-09-30'),
-       ('Usuário 3', 'usuario3@email.com', '1987-05-25'),
-       ('Usuário 4', 'usuario4@email.com', '1985-05-10');
+VALUES ('Everton', 'everton@gmail.com', '1970-06-01'),
+       ('Daniel', 'daniel@gmail.com', '1996-09-30'),
+       ('Matheus', 'matheus@gmail.com', '1987-05-25'),
+       ('Vinicius', 'vinicius@gmail.com', '1985-05-10');
 
 -- Inserindo dados na tabela "emprestimos"
 INSERT INTO emprestimos (id_livro, id_usuario, data_emprestimo, data_devolucao)
@@ -78,7 +78,7 @@ CREATE TRIGGER alterar_table_emprestimo
 BEFORE DELETE ON emprestimos
 FOR EACH ROW
 BEGIN
-  IF OLD.data_devolucao IS NULL OR OLD.data_devolucao IS NOT NULL THEN
+  IF emprestimos.data_devolucao IS NULL OR emprestimos.data_devolucao IS NOT NULL THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é permitido a exclusão dessa informação';
   END IF;
 END //
