@@ -129,4 +129,3 @@ DELETE FROM emprestimos
 WHERE id = 5;
 
 CALL listar_livros_emprestados_por_usuario(1);
-
